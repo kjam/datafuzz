@@ -47,8 +47,6 @@ coverage.xml
 .hypothesis/
 .coveragerc
 .editorconfig
-.travis.yml
-
 
 # Translations
 *.mo

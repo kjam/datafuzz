@@ -17,11 +17,11 @@ requirements = [
 ]
 
 setup_requirements = [
-    'pandas',
-    'numpy',
 ]
 
 test_requirements = [
+    'numpy',
+    'pandas',
     'pytest',
     'pytest-coverage',
     'pylint',
@@ -35,7 +35,7 @@ setup(
     author="Katharine Jarmul",
     author_email='katharine@kjamistan.com',
     url='https://github.com/kjam/datafuzz',
-    packages=find_packages(include=['datafuzz']),
+    packages=find_packages(),
     entry_points={
         'console_scripts': [
             'datafuzz=datafuzz.cli:main'
@@ -52,9 +52,9 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
     test_suite='tests',
     tests_require=test_requirements,
