@@ -14,6 +14,7 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     'faker',
     'dataset',
+    'yaml',
 ]
 
 setup_requirements = [
@@ -29,7 +30,7 @@ test_requirements = [
 
 setup(
     name='datafuzz',
-    version='0.1.0',
+    version='0.1.1',
     description="A data-science library built for testing cleaning, schema validation and model robustness. It messes up your data so you can test your data engineering and data science code (before it breaks in production).",
     long_description=readme + '\n\n' + history,
     author="Katharine Jarmul",
