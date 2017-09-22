@@ -1,5 +1,5 @@
 coverage==4.4.1
-dataset==0.8.0
+dataset==1.0.1
 Faker==0.8.1
 numpy==1.13.1
 pandas==0.20.3
