@@ -1,0 +1,12 @@
+num_rows: 200
+output: list
+timeseries:
+      start_time: 2015-01-01T00:00:00 
+      end_time: 2017-12-31T23:59:59
+      
+schema: 
+    city: faker.city
+    store_id: [1, 4, 7, 9]
+    sale_number: range(5,3000)
+    sale_amount: arange(-500.0,1599.99)
+    associate: faker.name

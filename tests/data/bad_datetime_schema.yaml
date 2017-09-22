@@ -1,0 +1,5 @@
+output: pandas
+num_rows: 10
+start_time: 2017-32-01T20:30
+schema:
+    foo: faker.name

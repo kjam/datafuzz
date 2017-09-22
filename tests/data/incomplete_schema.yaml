@@ -1,0 +1,3 @@
+output: pandas
+schema:
+    foo: faker.name

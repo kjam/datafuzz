@@ -1,0 +1,11 @@
+num_rows: 200
+output: 'file:///tmp/iot.csv'
+timeseries:
+    start_time: 2015-01-01T00:00:00 
+schema: 
+    username: faker.user_name
+    temperature: range(5,30)
+    heartrate: range(60,90)
+    build: faker.uuid4
+    latest: [0, 0, 1]
+    note: ['interval', 'sleep', 'wake', 'update', 'user', 'test', 'n/a']

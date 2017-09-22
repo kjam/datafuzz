@@ -1,0 +1,7 @@
+data:
+    input: 'file://datafuzz/examples/data/sales_data.csv'
+    output: 'file://datafuzz/examples/data/sales_data_with_dupes.csv'
+strategies:
+    - type: 'duplication'
+      percentage: 10
+      add_noise: 1
