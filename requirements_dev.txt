@@ -1,10 +1,10 @@
 coverage==4.4.1
-dataset==0.8.0
-Faker==0.8.1
+dataset==1.0.1
+Faker==0.8.3
 numpy==1.13.1
 pandas==0.20.3
 pylint==1.7.2
 pytest-cov==2.5.1
 Sphinx==1.6.3
 sphinx-autobuild==0.7.1
-tox==2.8.1
+tox==2.8.2
