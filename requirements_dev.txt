@@ -1,7 +1,7 @@
 coverage==4.4.1
 dataset==0.8.0
 Faker==0.8.1
-numpy==1.13.1
+numpy==1.22.0
 pandas==0.20.3
 pylint==1.7.2
 pytest-cov==2.5.1
