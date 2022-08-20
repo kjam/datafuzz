@@ -110,7 +110,7 @@ class DatasetGenerator(object):
                         break
             if isinstance(field_val, str) and 'faker.' in field_val:
                 field_val = field_val.replace('faker.', '')
-                row[field_name] = self.fake.__getattribute__(field_val)()
+                row[field_name] = getattr(self.fake, field_val)()
             elif isinstance(field_val, collections.Iterable):
                 row[field_name] = random.choice(field_val)
         return row
