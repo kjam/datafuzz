@@ -18,7 +18,7 @@ def pertubate_str(val):
         Returns:
             str
     """ 
-    possible_str = string.ascii_letters + string.punctuation
+    possible_str = string.ascii_letters + string.punctuation + string.digits
     for _ in range(random.randrange(5)):
         val.replace(random.choice(val), random.choice(possible_str))
     return val
