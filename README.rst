@@ -2,7 +2,6 @@
 datafuzz
 ========
 
-
 .. image:: https://img.shields.io/pypi/v/datafuzz.svg
         :target: https://pypi.python.org/pypi/datafuzz
 
@@ -43,7 +42,7 @@ Install datafuzz by running::
 
 Recommended use is with a proper Virtual Environment (learn more about `virtual environments <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`).
 
-For more details see :doc:`/installation`
+For more details see Installation Instructions.
 
 Contribute
 ----------
