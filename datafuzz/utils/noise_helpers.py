@@ -19,8 +19,10 @@ def pertubate_str(val):
             str
     """ 
     possible_str = string.ascii_letters + string.punctuation + string.digits
-    for _ in range(random.randrange(5)):
-        val.replace(random.choice(val), random.choice(possible_str))
+    for _ in range(random.randrange(1, 5)):
+        char = random.choice(val)
+        replacement = random.choice(possible_str.replace(char, ''))
+        val = val.replace(char, replacement)
     return val
 
 def messy_spaces(val):
