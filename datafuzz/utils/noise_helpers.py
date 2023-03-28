@@ -6,9 +6,22 @@ Helpers for noise.
 import logging
 import random
 import re
+import string
 
 # STRING METHODS
 
+def pertubate_str(val):
+    """ Generate a random string by permutating some characters
+        Arguments:
+            val (str): original string
+
+        Returns:
+            str
+    """ 
+    possible_str = string.ascii_letters + string.punctuation
+    for _ in range(random.randrange(5)):
+        val.replace(random.choice(val), random.choice(possible_str))
+    return val
 
 def messy_spaces(val):
     """ Add or remove spaces from a string
@@ -20,7 +33,6 @@ def messy_spaces(val):
     return val.replace(' ', ' ' * random.choice([0, 2, 3, 4, 5]))
 
 # NUMERIC METHODS
-
 
 def generate_random_int(val, low=0, high=100):
     """ Generate and integer between low and high
@@ -35,7 +47,14 @@ def generate_random_int(val, low=0, high=100):
         TODO:
             - should val be used in some way?
     """
-    return random.randint(low, high)
+    new_val = random.randint(low, high)
+    tries = 0
+    while new_val == val:
+        new_val = random.randint(low, high)
+        tries += 1
+        if tries == 10:
+            return val + random.randint(low, high)
+    return new_val
 
 
 def generate_random_float(val, low=0, high=1.0):
@@ -53,7 +72,15 @@ def generate_random_float(val, low=0, high=1.0):
             - should val be used in some way?
 
     """
-    return random.uniform(low, high)
+    new_val = random.uniform(low, high)
+    tries = 0
+    while new_val == val:
+        new_val = random.uniform(low, high)
+        tries += 1
+        if tries == 10:
+            return val + random.uniform(low, high)
+    return new_val
+
 
 # NUMPY TRANSFORM
 

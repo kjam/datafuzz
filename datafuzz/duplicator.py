@@ -8,7 +8,7 @@ You can also add random noise to the duplicated rows.
 from datafuzz.dataset import DataSet
 from datafuzz.strategy import Strategy
 from datafuzz.utils.noise_helpers import messy_spaces, generate_random_int, \
-    generate_random_float
+    generate_random_float, pertubate_str
 
 
 class Duplicator(Strategy):
@@ -36,7 +36,7 @@ class Duplicator(Strategy):
 
         if self.add_noise:
             sample = self.noise(sample)
-
+    
         self.dataset.append(sample)
 
     def noise(self, sample):
@@ -72,10 +72,13 @@ class Duplicator(Strategy):
                           'high': self.dataset.column_agg(col, max)}
                 if kwargs.get('low') == kwargs.get('high'):
                     kwargs['high'] += 1
-
                 sample = self.apply_func_to_column(
-                    lambda x: func(x, **kwargs), col)
+                    lambda x: func(x, **kwargs), col, 
+                    dataset=sample_dataset)
             elif col_type in [object, str]:
+                
                 sample = self.apply_func_to_column(messy_spaces, col,
+                                                   dataset=sample_dataset)
+                sample = self.apply_func_to_column(pertubate_str, col,
                                                    dataset=sample_dataset)
         return sample_dataset.records

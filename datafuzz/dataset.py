@@ -5,7 +5,10 @@ Datasets are a class used to hold imported data and newly generated data.
 All transformations require a dataset, which will be manipulated by
 the library and eventually exported for use.
 """
-import collections
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 import os
 import random
 import re
@@ -168,7 +171,7 @@ class DataSet(object):
             assert self.original is not None
             assert self.data_type in self.DATA_TYPES
             assert not isinstance(self.records, str)
-            assert isinstance(self.records, collections.Iterable)
+            assert isinstance(self.records, Iterable)
         except AssertionError:
             raise TypeError('Unsupported input: {}'.format(self.input))
         try:
@@ -293,7 +296,7 @@ class DataSet(object):
                     self.records.columns,
                     round(self.records.shape[1] * percentage), replace=False)
             else:
-                sample = self.records.sample(frac=percentage)
+                sample = self.records.sample(frac=percentage).copy(deep=True)
         elif self.data_type == 'numpy':
             if columns:
                 sample = np.random.choice(
@@ -326,6 +329,7 @@ class DataSet(object):
                 - should the index be maintained or reordered
                 - should new indexes be ordered or not
         """
+        print('in append with %s' % rows)
         if self.data_type == 'list':
             self.records.extend(rows)
         elif self.data_type == 'numpy':
@@ -333,7 +337,7 @@ class DataSet(object):
         else:
             if not isinstance(rows, pd.DataFrame):
                 rows = pd.DataFrame(rows)
-            self.records = self.records.append(rows, ignore_index=True)
+            self.records = pd.concat([self.records, rows], ignore_index=True)
 
     def to_output(self):
         """ Transform DataSet records to output. \

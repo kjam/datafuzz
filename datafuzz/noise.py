@@ -89,7 +89,7 @@ class NoiseMaker(Strategy):
             for col in self.columns:
                 self.set_value(value, column=col)
         if self.dataset.data_type == 'pandas':
-            self.dataset.records.ix[
+            self.dataset.records.loc[
                 np.random.choice(
                     self.dataset.records.shape[0],
                     self.num_rows), column] = value

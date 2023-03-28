@@ -34,7 +34,7 @@ class BaseYAMLParser:
         """
         with open(self.file_path, 'r') as myf:
             try:
-                self.parsed = yaml.load(myf)
+                self.parsed = yaml.safe_load(myf)
             except yaml.YAMLError:
                 logging.exception('Error loading YAML file')
                 raise SyntaxError('Invalid YAML! Please correct your syntax.')

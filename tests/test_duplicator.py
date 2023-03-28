@@ -63,6 +63,7 @@ def test_duplicate_with_noise(input_obj):
         dataset = DataSet(input_obj)
     duper = Duplicator(dataset, **{'percentage': 50, 'add_noise': True})
     duper.run_strategy()
+    print(dataset.records)
     assert isinstance(duper, Duplicator)
     if dataset.data_type == 'pandas':
         assert not dataset.records.equals(dataset.input)

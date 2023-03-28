@@ -1,4 +1,7 @@
-import collections
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 import pytest
 import pandas as pd
 import numpy as np
@@ -24,7 +27,7 @@ def test_init(input_obj, cols):
     dataset = DataSet(input_obj)
     fuzzer = Fuzzer(dataset, **{'columns': cols, 'percentage': 50})
     assert isinstance(fuzzer, Fuzzer)
-    assert isinstance(fuzzer.columns, collections.Iterable)
+    assert isinstance(fuzzer.columns, Iterable)
     assert fuzzer.num_rows > 0
     assert fuzzer.percentage == .5
 
@@ -42,6 +45,7 @@ def test_helper_methods():
 @pytest.mark.parametrize('input_obj,cols', [
     ([[1, 2, 3], [4, 5, 6]], ['2']),
     ([[1, 2, 3], [4, 5, 6]], None),
+    ([[0.333, -0.222]], None),
     (pd.DataFrame([{'test': 12, 'str_col': 'Testing the fuzz.',  'idx': 1},
                    {'test': 12.3, 'str_col': 'What will this be?', 'idx': 2}]), ['str_col']),
     (pd.DataFrame([{'test': 12, 'str_col': 'Testing the fuzz.',  'idx': 1},
@@ -57,11 +61,11 @@ def test_run_strategy(input_obj, cols):
     fuzzer = Fuzzer(dataset, **{'columns': cols, 'percentage': 50})
     fuzzer.run_strategy()
     assert isinstance(fuzzer, Fuzzer)
-    assert isinstance(fuzzer.columns, collections.Iterable)
+    assert isinstance(fuzzer.columns, Iterable)
     # TODO: need to add test that types are not equal as sometimes they test as equals
     if dataset.data_type == 'pandas':
         assert not dataset.records.equals(dataset.input)
     elif dataset.data_type == 'numpy':
-        assert not np.array_equal(dataset.records, dataset.input)
+        assert not bool(np.asarray(dataset.records == dataset.input).all())
     else:
         assert dataset.records != dataset.input

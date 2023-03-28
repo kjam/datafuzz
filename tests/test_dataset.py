@@ -1,6 +1,10 @@
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
+
 import os
 import pytest
-import collections
 import dataset as dataset_db
 
 from datafuzz.dataset import DataSet
@@ -31,7 +35,7 @@ def test_init_from_obj(input_obj):
     assert data.records is not input_obj
     assert data.original is input_obj
     assert len(data) == 2
-    assert isinstance(data, collections.Iterable)
+    assert isinstance(data, Iterable)
 
     count = 0
     for line in data:

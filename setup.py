@@ -30,7 +30,7 @@ test_requirements = [
 
 setup(
     name='datafuzz',
-    version='0.1.0-alpha',
+    version='0.1.1',
     description="A data-science library built for testing cleaning, schema validation and model robustness. It messes up your data so you can test your data engineering and data science code (before it breaks in production).",
     long_description=readme + '\n\n' + history,
     author="Katharine Jarmul",
@@ -53,9 +53,9 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     test_suite='tests',
     tests_require=test_requirements,

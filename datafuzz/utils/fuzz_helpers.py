@@ -59,12 +59,10 @@ def bigints(val):
 
 def hexify(val):
     """ Return hex value  """
-    try:
-        return hex(int(val))
-    except TypeError:
-        logging.error('could not hexify %s', val)
-        return val
-
+    if isinstance(val, np.ndarray):
+        return np.ndarray([hex(int(v)) for v in list(val)])
+    return hex(int(val))
+    
 
 # RANDOM / NEW DATA METHODS
 

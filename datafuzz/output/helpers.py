@@ -31,7 +31,7 @@ def obj_to_output(obj):
         return pd.DataFrame(obj.records)
     elif obj.output == 'numpy' and HAS_NUMPY:
         if obj.data_type == 'pandas':
-            return obj.records.as_matrix()
+            return obj.records.values
         return np.array(obj.records)
     elif obj.output == 'list':
         if obj.data_type == 'numpy':

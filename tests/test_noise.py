@@ -1,8 +1,12 @@
-import collections
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 import pytest
 import pandas as pd
 import numpy as np
 
+from itertools import chain
 from datafuzz.dataset import DataSet
 from datafuzz.noise import NoiseMaker
 
@@ -21,7 +25,7 @@ def test_init(input_obj, cols):
     dataset = DataSet(input_obj)
     noizer = NoiseMaker(dataset, **{'columns': cols, 'percentage': 50, 'noise': ['random']})
     assert isinstance(noizer, NoiseMaker)
-    assert isinstance(noizer.columns, collections.Iterable)
+    assert isinstance(noizer.columns, Iterable)
     assert noizer.num_rows > 0
     assert noizer.percentage == .5
 
@@ -51,13 +55,14 @@ def test_run_strategy(input_obj, cols, noise, limits):
     noizer = NoiseMaker(dataset, **{'columns': cols, 'percentage': 50, 'noise': noise}, limits=limits)
     noizer.run_strategy()
     assert isinstance(noizer, NoiseMaker)
-    assert isinstance(noizer.columns, collections.Iterable)
+    assert isinstance(noizer.columns, Iterable)
     if dataset.data_type == 'pandas':
         assert not dataset.records.equals(dataset.input)
     elif dataset.data_type == 'numpy':
         assert not np.array_equal(dataset.records, dataset.input)
     else:
-        assert dataset.records != dataset.input
+        assert False in [a == b and type(a) == type(b) for a, b in 
+            zip(chain.from_iterable(dataset.records), chain.from_iterable(dataset.input))]
 
 
 @pytest.mark.parametrize('input_obj,cols,val', [
@@ -75,7 +80,7 @@ def test_set_value(input_obj,cols,val):
     noizer.set_value(val)
     for col in noizer.columns:
         if noizer.dataset.data_type == 'pandas':
-            assert noizer.dataset.records[noizer.dataset.records.iloc[:,col] == val].shape[0] >= 1
+            assert noizer.dataset.records[noizer.dataset.records.loc[:,col] == val].shape[0] >= 1
         elif noizer.dataset.data_type == 'numpy':
             assert val in noizer.dataset.records[:,col]
         else:

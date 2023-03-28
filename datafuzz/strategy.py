@@ -3,6 +3,7 @@
 Strategies define how the data will be fuzzed, duplicated, noised and altered.
 """
 import logging
+import random
 from datafuzz.utils.noise_helpers import numpy_type_transform
 from datafuzz.settings import HAS_NUMPY
 
@@ -53,7 +54,10 @@ class Strategy(object):
         if self.dataset.data_type in ['pandas', 'numpy']:
             return round(
                 self.dataset.records.shape[0] * self.percentage)
-        return round(len(self.dataset.records) * self.percentage)
+        rows = round(len(self.dataset.records) * self.percentage)
+        if rows == 0:
+            return 1
+        return rows
 
     def get_numeric_columns(self, columns):
         """ Ensure columns are numeric, this will get indexes
@@ -92,13 +96,15 @@ class Strategy(object):
 
         Note: This performs transformations on `dataset.records` in place.
         """
+        indexes = []
         if dataset is None:
             dataset = self.dataset
         if dataset.data_type in ['pandas', 'numpy']:
-            indexes = list(np.random.choice(dataset.records.shape[0],
-                                            self.num_rows))
-            if self.dataset.data_type == 'pandas':
-                self.dataset.records.iloc[indexes, column] = \
+            while len(indexes) == 0:
+                indexes = random.sample(list(range(dataset.records.shape[0])),
+                    random.randint(1, dataset.records.shape[0]))
+            if dataset.data_type == 'pandas':
+                dataset.records.iloc[indexes, column] = \
                         dataset.records.iloc[indexes, column].map(function)
             else:
                 try:
@@ -121,8 +127,9 @@ class Strategy(object):
                         except ValueError:
                             logging.exception('Could not transform numpy type')
         else:
-            indexes = np.random.choice(
-                len(dataset.records), self.num_rows)
+            while len(indexes) == 0:
+                indexes = random.sample(list(range(len(dataset.records))), 
+                    random.randint(0, len(dataset.records)))
             dataset.records = [
                 val if idx not in indexes else
                 [v if i != column else function(v) for i, v in enumerate(val)]

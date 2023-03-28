@@ -4,7 +4,10 @@ Generators are used to produce datasets to use with datafuzz.
 
 You must have faker installed to use the generator.
 """
-import collections
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 import logging
 import random
 import re
@@ -111,7 +114,7 @@ class DatasetGenerator(object):
             if isinstance(field_val, str) and 'faker.' in field_val:
                 field_val = field_val.replace('faker.', '')
                 row[field_name] = getattr(self.fake, field_val)()
-            elif isinstance(field_val, collections.Iterable):
+            elif isinstance(field_val, Iterable):
                 row[field_name] = random.choice(field_val)
         return row
 
