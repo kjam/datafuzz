@@ -19,20 +19,24 @@ if HAS_NUMPY:
 
 def add_format(val):
     """ Insert format strings """
+    if val is None:
+        val = ""
     idx = random.randint(0, len(val))
     format_str = '%{}'.format(random.choice(list('fdsr')))
     return val[:idx] + format_str + val[idx:]
 
-
 def change_encoding(val):
     """ Return byte value with perhaps bad encoding  """
+    if val is None:
+        val = ""
     choice = random.choice(
         ['utf-16', 'latin-1', 'windows-1250', 'iso-8859-1'])
     return val.encode(choice, errors='replace')
 
-
 def to_bytes(val):
     """ Return byte value  """
+    if val is None:
+        val = ""
     return bytes(val, encoding='utf-8')
 
 
