@@ -5,6 +5,7 @@ except ImportError:
 import pytest
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 from datafuzz.dataset import DataSet
 from datafuzz.fuzz import Fuzzer
@@ -48,6 +49,12 @@ def test_helper_methods():
     ([[0.333, -0.222]], None),
     (pd.DataFrame([{'test': 12, 'str_col': 'Testing the fuzz.',  'idx': 1},
                    {'test': 12.3, 'str_col': 'What will this be?', 'idx': 2}]), ['str_col']),
+    (pd.DataFrame([{'test': 12, 'str_col': 'Testing the fuzz.',  'idx': 1},
+                   {'test': 12.3, 'str_col': 'What will this be?', 'idx': 2}]), None),
+    (pd.DataFrame([{'test': -3, 'date_col': datetime.now(),  'idx': 1},
+                   {'test': 0.4, 'date_col': datetime.now(), 'idx': 2}]), ['date_col']),
+    (pd.DataFrame([{'test': 44, 'date_col': datetime.now().date(),  'idx': 1},
+                   {'test': 67, 'date_col': datetime.now().date(), 'idx': 2}]), None),
     (pd.DataFrame([{'test': 12, 'str_col': 'Testing the fuzz.',  'idx': 1},
                    {'test': 12.3, 'str_col': 'What will this be?', 'idx': 2}]), None),
     (np.random.rand(3, 2), [0,1]),

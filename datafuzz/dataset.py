@@ -329,7 +329,6 @@ class DataSet(object):
                 - should the index be maintained or reordered
                 - should new indexes be ordered or not
         """
-        print('in append with %s' % rows)
         if self.data_type == 'list':
             self.records.extend(rows)
         elif self.data_type == 'numpy':

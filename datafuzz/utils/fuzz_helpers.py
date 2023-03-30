@@ -8,6 +8,7 @@ import logging
 import random
 from bisect import bisect
 from itertools import accumulate
+from datetime import timedelta
 from datafuzz.settings import HAS_NUMPY
 
 if HAS_NUMPY:
@@ -19,30 +20,58 @@ if HAS_NUMPY:
 
 def add_format(val):
     """ Insert format strings """
-    if val is None:
-        val = ""
+    if not isinstance(val, str):
+        val = str(val)
     idx = random.randint(0, len(val))
     format_str = '%{}'.format(random.choice(list('fdsr')))
     return val[:idx] + format_str + val[idx:]
 
 def change_encoding(val):
     """ Return byte value with perhaps bad encoding  """
-    if val is None:
-        val = ""
+    if not isinstance(val, str):
+        val = str(val)
     choice = random.choice(
         ['utf-16', 'latin-1', 'windows-1250', 'iso-8859-1'])
     return val.encode(choice, errors='replace')
 
 def to_bytes(val):
     """ Return byte value  """
-    if val is None:
-        val = ""
+    if not isinstance(val, str):
+        val = str(val)
     return bytes(val, encoding='utf-8')
 
 
 def insert_boms(val):
     """ Insert UTF BOMs at start of string  """
+    if not isinstance(val, str):   
+        val = str(val)
     return '{}{}'.format(codecs.BOM_UTF8, val)
+
+# DATE METHODS
+
+def shift_time(val):
+    """ Insert UTF BOMs at start of string  """
+    return val + timedelta(weeks=random.randint(-125, 125),
+                           days=random.randint(-100,100))
+
+def date_to_str(val):
+    """ Insert UTF BOMs at start of string  """
+    date_formats = [
+        "%d/%m/%y",
+        "%m/%d/%y",
+        "%d/%m/%Y",
+        "%m/%d/%Y",
+        "%m/%d/%Y %H:%M:%S",
+        "%d/%m/%Y %H:%M:%S",
+        "%m.%d.%YT%H:%M:%S",
+        "%d.%m.%YT%H:%M:%S",
+        "%d.%m.%Y at %H:%M:%S",
+        "%m.%d.%Y at %H:%M:%S",
+        "%m.%d.%y %H:%M:%S"
+    ]
+
+    return val.strftime(random.choice(date_formats))
+
 
 # NUMERIC METHODS
 

@@ -9,7 +9,8 @@ import random
 from datafuzz.strategy import Strategy
 from datafuzz.utils.fuzz_helpers import add_format, change_encoding, \
         to_bytes, insert_boms, nanify, bigints, hexify,  \
-        sql, metachars, files, delimiter, emoji
+        sql, metachars, files, delimiter, emoji, date_to_str, \
+        shift_time
 
 
 class Fuzzer(Strategy):
@@ -51,9 +52,11 @@ class Fuzzer(Strategy):
             col_type = self.dataset.column_dtype(column)
             if random.randint(0, 100) < 20:
                 fuzz = self.fuzz_random()
+            elif 'datetime' in str(col_type) or '<M8[ns]' in str(col_type):
+                fuzz = self.fuzz_date()
             elif col_type in [object, str]:
                 fuzz = self.fuzz_str()
-            elif 'int' or 'float' in str(col_type):
+            elif 'int' in str(col_type) or 'float' in str(col_type):
                 fuzz = self.fuzz_numeric()
 
             self.apply_func_to_column(fuzz, column)
@@ -71,6 +74,19 @@ class Fuzzer(Strategy):
         """
         return random.choice([add_format, change_encoding,
                               to_bytes, insert_boms])
+
+
+    def fuzz_date(self):
+        """ Return random choice from date
+            fuzz helpers.
+
+
+            Possible transformations:
+                - shift_time:      shift the time by a random amount
+                - date_to_str:     transform to string
+        """
+        return random.choice([shift_time, date_to_str])
+
 
     def fuzz_numeric(self):
         """ Return a random choice from the numeric
